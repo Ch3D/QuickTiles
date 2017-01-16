@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">QuickTiles</string>
+    <string name="state_timeout_enabled">2 min</string>
+    <string name="state_timeout_internediate">1 min</string>
+    <string name="state_timeout_disabled">15 sec</string>
+
+    <string name="state_brightness_enabled">Bright</string>
+    <string name="state_brightness_internediate">Medium</string>
+    <string name="state_brightness_auto">Auto</string>
+</resources>
