@@ -29,14 +29,12 @@ class ScreenTimeoutTileService : BaseTileService(ScreenTimeoutTileService.DISABL
     }
 
     override fun onTileClick(tile: Tile) {
-        if (tile.state == Tile.STATE_ACTIVE) {
-            when (mCurrentState.primaryValue) {
-                DELAY_DISABLED -> updateState(tile, INTERMEDIATE)
+        when (mCurrentState.primaryValue) {
+            DELAY_DISABLED -> updateState(tile, INTERMEDIATE)
 
-                DELAY_INTERMEDIATE -> updateState(tile, ENABLED)
+            DELAY_INTERMEDIATE -> updateState(tile, ENABLED)
 
-                DELAY_ENABLED -> updateState(tile, DISABLED)
-            }
+            DELAY_ENABLED -> updateState(tile, DISABLED)
         }
     }
 
@@ -49,19 +47,22 @@ class ScreenTimeoutTileService : BaseTileService(ScreenTimeoutTileService.DISABL
         private val DELAY_INTERMEDIATE = 60 * 1000
         private val DELAY_ENABLED = 120 * 1000
 
-        val ENABLED = TileState(R.drawable.vector_tile_timeout_enabled,
+        val ENABLED = TileState(Tile.STATE_ACTIVE,
+                R.drawable.vector_tile_timeout_enabled,
                 DELAY_ENABLED,
-                BaseTileService.Companion.DEFAULT_VALUE,
+                BaseTileService.DEFAULT_VALUE,
                 R.string.state_timeout_enabled)
 
-        val INTERMEDIATE = TileState(R.drawable.vector_tile_timeout_intermediate,
+        val INTERMEDIATE = TileState(Tile.STATE_ACTIVE,
+                R.drawable.vector_tile_timeout_intermediate,
                 DELAY_INTERMEDIATE,
-                BaseTileService.Companion.DEFAULT_VALUE,
+                BaseTileService.DEFAULT_VALUE,
                 R.string.state_timeout_internediate)
 
-        val DISABLED = TileState(R.drawable.vector_tile_timeout_disabled,
+        val DISABLED = TileState(Tile.STATE_INACTIVE,
+                R.drawable.vector_tile_timeout_disabled,
                 DELAY_DISABLED,
-                BaseTileService.Companion.DEFAULT_VALUE,
+                BaseTileService.DEFAULT_VALUE,
                 R.string.state_timeout_disabled)
     }
 }

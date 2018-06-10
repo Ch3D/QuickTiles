@@ -16,8 +16,7 @@ class BrightnessModeTileService : BaseTileService(BrightnessModeTileService.AUTO
                 mCurrentState.primaryValue)
 
         if (brightness >= 0) {
-            result = result and Settings.System.putInt(contentResolver, SCREEN_BRIGHTNESS,
-                    brightness)
+            result = result and Settings.System.putInt(contentResolver, SCREEN_BRIGHTNESS, brightness)
         }
         return result
     }
@@ -46,14 +45,12 @@ class BrightnessModeTileService : BaseTileService(BrightnessModeTileService.AUTO
     }
 
     override fun onTileClick(tile: Tile) {
-        if (tile.state == Tile.STATE_ACTIVE) {
-            when (mCurrentState.secondaryValue) {
-                BRIGHTNESS_AUTO -> updateState(tile, MEDIUM)
+        when (mCurrentState.secondaryValue) {
+            BRIGHTNESS_AUTO -> updateState(tile, MEDIUM)
 
-                BRIGHTNESS_MEDIUM -> updateState(tile, BRIGHT)
+            BRIGHTNESS_MEDIUM -> updateState(tile, BRIGHT)
 
-                BRIGHTNESS_HIGH -> updateState(tile, AUTO)
-            }
+            BRIGHTNESS_HIGH -> updateState(tile, AUTO)
         }
     }
 
@@ -64,17 +61,20 @@ class BrightnessModeTileService : BaseTileService(BrightnessModeTileService.AUTO
         private val BRIGHTNESS_HIGH = 255
         private val DEFAULT_BRIGHTNESS = 122
 
-        val AUTO = TileState(R.drawable.vector_tile_brightness_auto,
+        val AUTO = TileState(Tile.STATE_INACTIVE,
+                R.drawable.vector_tile_brightness_auto,
                 SCREEN_BRIGHTNESS_MODE_AUTOMATIC,
                 BRIGHTNESS_AUTO,
                 R.string.state_brightness_auto)
 
-        val MEDIUM = TileState(R.drawable.vector_tile_brightness_medium,
+        val MEDIUM = TileState(Tile.STATE_ACTIVE,
+                R.drawable.vector_tile_brightness_medium,
                 Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL,
                 BRIGHTNESS_MEDIUM,
                 R.string.state_brightness_internediate)
 
-        val BRIGHT = TileState(R.drawable.vector_tile_brightness_full,
+        val BRIGHT = TileState(Tile.STATE_ACTIVE,
+                R.drawable.vector_tile_brightness_full,
                 Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL,
                 BRIGHTNESS_HIGH,
                 R.string.state_brightness_enabled)
