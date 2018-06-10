@@ -38,6 +38,7 @@ abstract class BaseTileService constructor(defaultState: TileState) : TileServic
         tile.label = getString(mCurrentState.titleResId)
         tile.icon = Icon.createWithResource(this, mCurrentState.drawableId)
         setMode(mCurrentState)
+        tile.state = newState.state
         tile.updateTile()
     }
 
