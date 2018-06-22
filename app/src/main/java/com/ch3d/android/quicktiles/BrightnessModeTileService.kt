@@ -31,7 +31,7 @@ class BrightnessModeTileService : BaseTileService(BrightnessModeTileService.AUTO
                 SCREEN_BRIGHTNESS,
                 DEFAULT_BRIGHTNESS)
 
-    override fun onUpdateTile(tile: Tile) {
+    override fun updateTile(tile: Tile) {
         if (brightnessMode == SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
             mCurrentState = AUTO
         } else {

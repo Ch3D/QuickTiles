@@ -13,42 +13,45 @@ import android.service.quicksettings.TileService
 abstract class BaseTileService constructor(defaultState: TileState) : TileService() {
 
     companion object {
-        val DEFAULT_VALUE = -1
+        const val DEFAULT_VALUE = -1
     }
+
+    private fun hasWriteSettingsPermission() = Settings.System.canWrite(this)
 
     protected var mCurrentState: TileState = defaultState
 
-    override fun onStartListening() = onUpdateTile(qsTile)
-
-    protected abstract fun onUpdateTile(tile: Tile)
-
-    protected fun ensurePermissions(): Boolean {
-        if (!Settings.System.canWrite(this)) {
-            val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
-            intent.data = Uri.parse("package:" + applicationContext.packageName)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-            return false
+    override fun onStartListening() {
+        if (hasWriteSettingsPermission()) {
+            updateTile(qsTile)
         }
-        return true
     }
+
+    abstract fun updateTile(tile: Tile)
 
     protected fun updateState(tile: Tile, newState: TileState) {
         mCurrentState = newState
-        tile.label = getString(mCurrentState.titleResId)
-        tile.icon = Icon.createWithResource(this, mCurrentState.drawableId)
         setMode(mCurrentState)
-        tile.state = newState.state
-        tile.updateTile()
+        tile.apply {
+            label = getString(mCurrentState.titleResId)
+            icon = Icon.createWithResource(this@BaseTileService, mCurrentState.drawableId)
+            state = newState.state
+            updateTile()
+        }
     }
 
     protected abstract fun setMode(state: TileState): Boolean
 
     override fun onClick() {
-        if (ensurePermissions()) {
+        if (!hasWriteSettingsPermission()) {
+            startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
+                    .apply {
+                        data = Uri.parse("package:" + applicationContext.packageName)
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    })
+        } else {
             onTileClick(qsTile)
         }
     }
 
-    protected abstract fun onTileClick(qsTile: Tile)
+    protected abstract fun onTileClick(tile: Tile)
 }
