@@ -31,7 +31,7 @@ class BrightnessModeTileService : BaseTileService(BrightnessModeTileService.AUTO
                 SCREEN_BRIGHTNESS,
                 DEFAULT_BRIGHTNESS)
 
-    override fun onUpdateTile(tile: Tile) {
+    override fun updateTile(tile: Tile) {
         if (brightnessMode == SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
             mCurrentState = AUTO
         } else {
@@ -61,22 +61,27 @@ class BrightnessModeTileService : BaseTileService(BrightnessModeTileService.AUTO
         private val BRIGHTNESS_HIGH = 255
         private val DEFAULT_BRIGHTNESS = 122
 
-        val AUTO = TileState(Tile.STATE_INACTIVE,
-                R.drawable.vector_tile_brightness_auto,
-                SCREEN_BRIGHTNESS_MODE_AUTOMATIC,
-                BRIGHTNESS_AUTO,
-                R.string.state_brightness_auto)
+        val AUTO = TileState.build {
+            drawableId = R.drawable.vector_tile_brightness_auto
+            primaryValue = SCREEN_BRIGHTNESS_MODE_AUTOMATIC
+            secondaryValue = BRIGHTNESS_AUTO
+            titleResId = R.string.state_brightness_auto
+        }
 
-        val MEDIUM = TileState(Tile.STATE_ACTIVE,
-                R.drawable.vector_tile_brightness_medium,
-                Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL,
-                BRIGHTNESS_MEDIUM,
-                R.string.state_brightness_internediate)
+        val MEDIUM = TileState.build {
+            state = Tile.STATE_ACTIVE
+            drawableId = R.drawable.vector_tile_brightness_medium
+            primaryValue = Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+            secondaryValue = BRIGHTNESS_MEDIUM
+            titleResId = R.string.state_brightness_internediate
+        }
 
-        val BRIGHT = TileState(Tile.STATE_ACTIVE,
-                R.drawable.vector_tile_brightness_full,
-                Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL,
-                BRIGHTNESS_HIGH,
-                R.string.state_brightness_enabled)
+        val BRIGHT = TileState.build {
+            state = Tile.STATE_ACTIVE
+            drawableId = R.drawable.vector_tile_brightness_full
+            primaryValue = Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+            secondaryValue = BRIGHTNESS_HIGH
+            titleResId = R.string.state_brightness_enabled
+        }
     }
 }
