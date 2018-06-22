@@ -15,7 +15,7 @@ class ScreenTimeoutTileService : BaseTileService(ScreenTimeoutTileService.DISABL
                 SCREEN_OFF_TIMEOUT,
                 DELAY_DISABLED)
 
-    override fun onUpdateTile(tile: Tile) {
+    override fun updateTile(tile: Tile) {
         when (screenTimeOut) {
             DELAY_DISABLED -> mCurrentState = DISABLED
 
