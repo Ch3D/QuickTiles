@@ -12,11 +12,7 @@ data class TileState(val state: Int,
                      val titleResId: Int) {
 
     private constructor(builder: Builder) :
-            this(builder.state,
-                    builder.drawableId,
-                    builder.primaryValue,
-                    builder.secondaryValue,
-                    builder.titleResId)
+            this(builder.state, builder.drawableId, builder.primaryValue, builder.secondaryValue, builder.titleResId)
 
     companion object {
         inline fun build(block: Builder.() -> Unit) = Builder().apply(block).build()

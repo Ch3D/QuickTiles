@@ -1,7 +1,9 @@
 package com.ch3d.android.quicktiles
 
 import android.provider.Settings
-import android.provider.Settings.System.*
+import android.provider.Settings.System.SCREEN_BRIGHTNESS
+import android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE
+import android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
 import android.service.quicksettings.Tile
 
 /**
@@ -11,10 +13,7 @@ class BrightnessModeTileService : BaseTileService(BrightnessModeTileService.AUTO
 
     override fun setMode(state: TileState): Boolean {
         val brightness = mCurrentState.secondaryValue
-        var result = Settings.System.putInt(contentResolver,
-                SCREEN_BRIGHTNESS_MODE,
-                mCurrentState.primaryValue)
-
+        var result = Settings.System.putInt(contentResolver, SCREEN_BRIGHTNESS_MODE, mCurrentState.primaryValue)
         if (brightness >= 0) {
             result = result and Settings.System.putInt(contentResolver, SCREEN_BRIGHTNESS, brightness)
         }
@@ -22,14 +21,10 @@ class BrightnessModeTileService : BaseTileService(BrightnessModeTileService.AUTO
     }
 
     private val brightnessMode: Int
-        get() = Settings.System.getInt(contentResolver,
-                SCREEN_BRIGHTNESS_MODE,
-                SCREEN_BRIGHTNESS_MODE_AUTOMATIC)
+        get() = Settings.System.getInt(contentResolver, SCREEN_BRIGHTNESS_MODE, SCREEN_BRIGHTNESS_MODE_AUTOMATIC)
 
     private val brightnessLevel: Int
-        get() = Settings.System.getInt(contentResolver,
-                SCREEN_BRIGHTNESS,
-                DEFAULT_BRIGHTNESS)
+        get() = Settings.System.getInt(contentResolver, SCREEN_BRIGHTNESS, DEFAULT_BRIGHTNESS)
 
     override fun updateTile(tile: Tile) {
         if (brightnessMode == SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
@@ -41,21 +36,19 @@ class BrightnessModeTileService : BaseTileService(BrightnessModeTileService.AUTO
                 mCurrentState = MEDIUM
             }
         }
+
         updateState(tile, mCurrentState)
     }
 
     override fun onTileClick(tile: Tile) {
-        when (mCurrentState.secondaryValue) {
-            BRIGHTNESS_AUTO -> updateState(tile, MEDIUM)
-
-            BRIGHTNESS_MEDIUM -> updateState(tile, BRIGHT)
-
-            BRIGHTNESS_HIGH -> updateState(tile, AUTO)
+        when (mCurrentState) {
+            AUTO -> updateState(tile, MEDIUM)
+            MEDIUM -> updateState(tile, BRIGHT)
+            BRIGHT -> updateState(tile, AUTO)
         }
     }
 
     companion object {
-
         private val BRIGHTNESS_AUTO = -1
         private val BRIGHTNESS_MEDIUM = 132
         private val BRIGHTNESS_HIGH = 255
